@@ -1,19 +1,50 @@
 # OOP interviews
-## 4 basic  concepts of OOP
+## 1. What is OOP?
+OOP stands for the Object Oriented Programming. The programs are considered as a collection of Objects. Each object is an instance of class.
+
+## 2. 4 basic concepts of OOP
 * Abstraction
 * Encapsulation
 * Inheritance
 * Polymorphism
 
-## What is Polymorphism?
+## 3. What is Abstraction?
+Object with abstraction means the *internal implement details* are hidden.
+For example, if you want to have personal information about a patient, you don't need some unnecessary information like pet's name. You fetch information from a pool of information, this approach called abstraction.
 
-Means multi forms, the child class gets the overwrite fields(also be called variables) and functions. That means this function or field can be used in the different situations 
-You can see a good example：image here is a air conditioner, in the summer, it makes room cool down and in winter, it makes the room cold
+However, the information can be used for different applications, the patient information can also be used for job application and government database. The information can also be slightly modified. Hence it become master data (the basic of further data for different applications). This is the advantage of Abstraction.
+
+## 4. What is Polymorphism?
+
+The word Polymorphism means multi forms, the child class gets the overwrite fields(also be called variables) and functions. That means this function or field can be used in the different situations by class inheritance. The child class object can be assigned to any class reference in its parent hierarchy and itself.
+
+Here is a simple example, in the summer, it makes room cool down and in winter, it makes the room cold
+```
+Student student = new Student()
+Person person = new Student()
+``` 
+
+So the conclusion like this, with polymorphism, the subclass can change only the method if there is an override, but will not change any other fields in the super class.
+But we need to notice that if there is a static method, the method can not be changed. And if we force to change AirCondition class (summer) to SummerAC class, all the fields and methods will be SummerAC's
+
+Extra Information:
+
+Here are 2 kinds of Polymorphisms:
+
+
+### Dynamic Polymorphism (it is different in C#)
+
+This is also mentioned as *Run-Time polymorphism, Dynamic binding, Run-Time binding, Late binding and Method overriding*.
+
+Let's think about the override of a method. When an object is assigned to a class reference and when a method of the object is called, the method execute depend on the object rather than the reference class (if the reference class is a parent class). But the properties are following reference.
+
+### For java
+Here is an example to explain:
 ```
 class AirCondition()
 {
     int temperature = 30;
-    ChangeTemp()
+    public void ChangeTemp()
     {
         Print("I have no idea what to do")
     }
@@ -22,21 +53,18 @@ class AirCondition()
 class SummerAC: AirCondition()
 {
     int temperature = 40;
-    ChangeTemp()
+    public void ChangeTemp()
     {
         Print("room is cooler");
     }
 }
 
-class WinterAC: AirCondition()
+AirCondition ac = new AirCondition();
+AirCondition another_ac = new SummerAC();
+SummerAC summer_ac = new SummerAC();
 
-{
-    int temperature = 10;
-    ChangeTemp()
-    {
-        Print("room is hotter");
-    }
-}
+// Here you can see even we use AirCondition as reference, but the execute used object (SummerAC) method
+Print(another_ac.ChangeTemp); // output is "room is cooler"
 
 AirCondition summer = new SummerAC()
 // will print room is cooler  
@@ -46,11 +74,52 @@ Print(summer.temperature )
 AirCondition ac = new AirCondition()
 // Will print I have no idea what to do
 sc.ChangeTemp();
-
+```
+### For C#, you need to mention virtual and override before method
 
 ```
-So the conclusion like this, with polymorphism, the subclass can change only the method if there is an override, but will not change any other fields in the super class.
-But we need to notice that if there is a static method, the method can not be changed. And if we force to change AirCondition class (summer) to SummerAC class, all the fields and methods will be SummerAC's
+class AirCondition()
+{
+    int temperature = 30;
+    public virtual void ChangeTemp()
+    {
+        Print("I have no idea what to do")
+    }
+}
+
+class SummerAC: AirCondition()
+{
+    int temperature = 40;
+    public void ChangeTemp()
+    {
+        Print("room is cooler");
+    }
+}
+
+class SummerAC_Override: AirCondition()
+{
+   int temperature = 40;
+    public override void ChangeTemp()
+    {
+        Print("room is cooler");
+    }
+}
+
+AirCondition ac = new AirCondition();
+AirCondition another_ac = new SummerAC();
+AirCondition another_ac_override();
+SummerAC summer_ac = new SummerAC();
+
+// Here you can see even we use AirCondition as reference, but the execute used object (SummerAC) method
+Print(another_ac.ChangeTemp()); // output is "I have no idea what to do"
+Print(another_ac_override.ChangeTemp()); // output is "room is cooler"
+```
+
+
+### Static Polymorphism
+This is also mentioned as * Compile-Time polymorphism, Static binding, Compile-Time binding, Early binding and Method overloading. * 
+
+Everything you need to know it is overloading. Same method name but different parameter and return type can also be different.
 
 ## Explain what is static and what can it do
 At first, we need to agree that the RAM for computers are limited, we need to save it as much as possible

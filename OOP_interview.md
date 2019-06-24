@@ -121,13 +121,27 @@ This is also mentioned as * Compile-Time polymorphism, Static binding, Compile-T
 
 Everything you need to know it is overloading. Same method name but different parameter and return type can also be different.
 
-## Explain what is static and what can it do
-At first, we need to agree that the RAM for computers are limited, we need to save it as much as possible
+## 5. What is Encapsulation?
+
+This is an attribute of an object, it contains all the hidden data inside an object. The hidden data can be restricted to the members of the class.
+There are 4 levels of encapsulation access modifiers:
+* Public 
+* Private
+* Protect: subclasses can also access the data
+* Internal: classes inside this package can access 
+
+## 6. Inheritance:
+Class can share the structure and behavior to it's subclasses. 
+
+## 7. Explain what is static and what can it do
+At first, we need to agree that the RAM for computers are limited, we need to save it as much as possible.
 ### Static value
-A static value will make this value only take a part of RAM space. If there is something needs to use this value or function, it will never need extra spaces. But if this value is not a static, every time it will occupy a space
+A static value will make this value only take a part of RAM space. If there is something needs to use this value or function, it will never need extra spaces. But if this value is not a static, every time it will occupy a space when you use it.
 Let's make an example to make it cleaner
-In a restaurant, there is only one salt pot, every time if someone wants to add salt in his soup, he only need to call it. It same as the program, every time the program needs a static value, it only need to call it in RAM
+In a restaurant, there is only one salt pot, every time if someone wants to add salt in his soup, he only need to call it. It same as the program, every time the program needs a static value, it only need to call it in RAM.
 But without static, that means the program needs to generate a number of customers with salt, if there is no body, there is also not salt pot. But each person with the salt pot will also make the waste of resource.
+
+
 And here is a code exam to make you understand it better:
 ```
 class Customer()
@@ -137,7 +151,14 @@ class Customer()
 
     public static void main(String[] args)
     {
-        //If I want to use a 
+        // If I want to use a pepper pot 
+        Customer c1 = new Customer();
+        c1.pepper = "pepper";
+        Customer c2 = new Customer();
+        c2.pepper = "pepper";
+
+        // If I want to use a salt
+        Customer.salt = "salt";
 
     }
 }
@@ -147,7 +168,7 @@ class Customer()
 If a method be declared by static, this method can be directly used, otherwise you need to initialize an object at first
 An example like this:
 ```
-public class XX()
+public class Test()
 {
     public static void method1(){}
     public void method2(){}
@@ -156,7 +177,7 @@ public class XX()
         // I can directly use method1
         method1();
         // But I need to initial an object to use method2
-        XX x = new XX();
+        Test x = new Test();
         x.method2();
     }
 }
@@ -176,22 +197,35 @@ And a static class should:
 
 * Cannot contain Instance Constructors.
 
-## What is Encapsulation?
-This is an attribute of an object, it contains all the hidden data inside an object. The hidden data can be restricted to the members of the class
-There are 4 levels of encapsulation:
-* Public 
-* Private
-* Protect: subclasses can also access the data
-* Internal: classes inside this package can access 
-
-## Inheritance:
-Class can share the structure and behavior to it's subclasses. 
-
-## Manipulation
-In C# like string Manipulation(I have no idea why this question)
+## 8. What is the difference between Abstract and Interface
 
 ## What is abstract class
-This class at first cannot be instantiated. It can be inherited and it only contains abstract method.
+This class at first cannot be instantiated. A static class may have static fields and static methods. When the abstract class is inherited, the subclass usually provides implementations for all the abstract methods in its parent class. If not, the subclass must be declared abstract.
+
+You can use abstract class for these usage:
+
+* You want to share code among several closely related classes
+* You expect that classes that extend the abstract class have many common methods and fields or require access modifiers other than public(*protected and private*)
+* You want to declare non-static and non-finial fields. This enables you to define methods that can access and modify the state of the object. 
 
 ## What is Interface 
-Interface contains only the declarations of the methods, properties and events. What we should notice is these functions should not be implemented.
+Interface contains only the declarations of the methods, properties and events. What we should notice is these functions should not be implemented. We define what kind of operation an object can perform. These operations are defined by the class that implement the interface.
+
+You can use interface for these usage:
+* You expect that unrelated classes would implement your interface. For example, the interfaces Comparable and Cloneable are implemented by many unrelated classes.
+* You want to specify the behavior of a particular data type, but not concerned about who implements its behavior.
+* You want to take advantage of multiple inheritances.
+
+### What is the difference 
+* Method: Interface can not have implementations. Abstract class can have instance methods that implements a default behavior.
+* Variables: in Java interface is default final(can only initialed once). 
+* Members if interface are public by default.
+* In java a class can only extend one interface, but can extend multiple abstract classes.
+* Abstract class can be invoked if a main() method exists. BTW: both interface and abstract classes cannot be instantiated.
+* Interfaces are slow because it requires extra indirection.
+
+## 9. What is the difference between out and ref
+
+## 9. Manipulation
+In C# like string Manipulation(I have no idea why this question)
+

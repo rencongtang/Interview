@@ -199,7 +199,7 @@ And a static class should:
 
 ## 8. What is the difference between Abstract and Interface
 
-## What is abstract class
+### What is abstract class
 This class at first cannot be instantiated. A static class may have static fields and static methods. When the abstract class is inherited, the subclass usually provides implementations for all the abstract methods in its parent class. If not, the subclass must be declared abstract.
 
 You can use abstract class for these usage:
@@ -208,7 +208,7 @@ You can use abstract class for these usage:
 * You expect that classes that extend the abstract class have many common methods and fields or require access modifiers other than public(*protected and private*)
 * You want to declare non-static and non-finial fields. This enables you to define methods that can access and modify the state of the object. 
 
-## What is Interface 
+### What is Interface 
 Interface contains only the declarations of the methods, properties and events. What we should notice is these functions should not be implemented. We define what kind of operation an object can perform. These operations are defined by the class that implement the interface.
 
 You can use interface for these usage:
@@ -224,8 +224,315 @@ You can use interface for these usage:
 * Abstract class can be invoked if a main() method exists. BTW: both interface and abstract classes cannot be instantiated.
 * Interfaces are slow because it requires extra indirection.
 
-## 9. What is the difference between out and ref
+## 9. What is the difference between out and ref (C#)
 
-## 9. Manipulation
-In C# like string Manipulation(I have no idea why this question)
+### Ref
+Same as out, ref passes arguments by reference. It means any changes made to this argument in the method will be reflected in the variable when control returns to the calling method. The ref parameter does not pass the property.
+```
+class GFG { 
+  
+    // Main Method 
+    public static void Main() 
+    { 
+  
+        // Assign string value 
+        string str = "Geek"; // Need to initial in the beginning
+  
+        // Pass as a reference parameter 
+        SetValue(ref str); // Hello!!Geek
+  
+        // Display the given string 
+        Console.WriteLine(str); //GeekforGeeks
+    } 
+  
+    static void SetValue(ref string str1) 
+    { 
+  
+        // Check parameter value 
+        if (str1 == "Geek") { 
+            Console.WriteLine("Hello!!Geek"); 
+        } 
+  
+        // Assign the new value 
+        // of the parameter 
+        str1 = "GeeksforGeeks"; 
+    } 
+} 
+
+```
+
+### Out
+*Out* is a C# keyword for *passing the arguments* to methods as a *reference type*. It us generally used when a method returns multiple values. The out parameter does not pass the property. 
+
+Here is an example:
+```
+class GFG{
+    static public void Main()
+    {
+        int G; 
+        sum(out G);
+        Console.WriteLine("the sum of the value is: {0}", G); // the sum if the value is: 2;
+    }
+
+    public static void Sum(out int G)
+    {
+        G = 1; //Initial 
+        G += G;
+    }
+}
+
+```
+
+### Difference
+|Ref|Out|
+|----------------------------|----------------------------|
+|Parameter should be initialed outside the function(Initial parameter outside function)|Not necessary to initial|
+|Not necessary to initialize the value of a parameter before returning to the calling method|Need to initial parameter before returning to calling method(Initial parameter inside function)|
+|Useful when method need to change value of passed parameter|When wants to return multiple values|
+|Data pass in bi-directional|Data only pass in unidirectional|
+
+
+
+## 10. What is manipulators?(C++)
+
+Functions specifically designed to be used in conjunction with the insertion (<<) and extraction(>>)
+
+## 11. What is constructor?
+Have the same name as class it is a method to initial the state of an object. It gets invoked when the object is created. What we should notice is the constructor should not return any type.
+The constructor in C# like:
+```
+public class Model
+{
+    public Model() {}
+}
+```
+
+## 12. What is destructor?
+This function is automatically called when the object is made of scope (out of scope) or destroyed. You need to use tilde (~) operator for destructor.
+```
+public class Model
+{
+    public User() 
+    {
+        Console.WriteLine("An instance of class created");
+    }
+    ~User() 
+    {
+        Console.WriteLine("An instance of class destroyed");
+    }
+}
+
+Class Program
+{
+    static void Details()
+    {
+        User user = new User();//Created instance of class
+        // use the garbage collector and automatically invoke a destructor
+        GC.Collect();// instance be destroyed 
+    }
+}
+``` 
+
+## 13. What is inline function?
+It seems this term only be used in C++. 
+It is a technique used by the compilers and instructs to insert completed body of the function wherever that function is used in the program source code. (I don't know what it is talking about)
+
+## 14. What is a virtual function?
+It is a function in class which stands it can be overridden in its derived class. This function can be implemented by using a keyword called virtual and it can be given during function declaration.
+
+```
+class AirCondition()
+{
+    int temperature = 30;
+    public virtual void ChangeTemp()
+    {
+        Print("I have no idea what to do")
+    }
+}
+
+class SummerAC: AirCondition()
+{
+    int temperature = 40;
+    public void ChangeTemp()
+    {
+        Print("room is cooler");
+    }
+}
+
+class SummerAC_Override: AirCondition()
+{
+   int temperature = 40;
+    public override void ChangeTemp()
+    {
+        Print("room is cooler");
+    }
+}
+
+AirCondition ac = new AirCondition();
+AirCondition another_ac = new SummerAC();
+AirCondition another_ac_override();
+SummerAC summer_ac = new SummerAC();
+
+// Here you can see even we use AirCondition as reference, but the execute used object (SummerAC) method
+Print(another_ac.ChangeTemp()); // output is "I have no idea what to do"
+Print(another_ac_override.ChangeTemp()); // output is "room is cooler"
+```
+## 15. What is friend function
+A friend function is a friend of a class that is allowed to access to Public, private or protected data in that same class. If the function is defined outside of this class, this function cannot access such information.
+
+A friend can be declared anywhere in the class declaration and it cannot be affected by access control keywords like private, public or protect.
+
+## 16. What is ternary operator
+The ternary opera is used for condition judgement. It takes 3 arguments. The first argument is a comparison argument, the second is the result upon a true comparison and the third is the result upon false comparison.
+
+```
+condition ? value_if_true : value_if_false
+```
+
+## 17. What is the use of finalize method
+This function is called by garbage collector when the garbage collection decide there are no more reference to the object. A subclass override the finalize method to dispose of system resources or to perform other cleanup.
+
+```
+ObjectDemo obj = new ObjectDemo();
+//when finish use this object
+
+obj.finalize();
+```
+
+## 18. What is the different types of arguments
+### Parameter
+A variable used during declaration of the function or subroutine
+### Arguments
+The variables passed to the function body and should match with parameter defined.
+
+There are 2 Type of arguments:
+* Call by value will get modified only inside the functions and returns the same value whatever it is passed to the function. That is because the value is copied in the function.
+```
+int num1 = 5;
+public void ChangeValue(int i)
+{
+    i = 10;
+}
+
+ChangeValue(num1);
+Console.WriteLine(num1); // 5
+```
+* Called by reference will get modified in both inside and outside the functions and it returns the same or different value.
+If we define a class and it is a reference class 
+```
+public class User
+{
+    public int UserID
+    {
+        get;
+        set;
+    }
+    public string Name
+    {
+        get;
+        set;
+    }
+}
+User obj = new User()
+{
+    UserID = 1, Name = "Jack"
+}
+
+public void ChangeName(User user)
+{
+    user.Name = "Joker";
+}
+
+ChangeName(obj);
+Console.WriteLine(obj.Name); // gives Joker
+```
+
+## 19. What is super keyword?
+To access the data members of parent class when both parent and child class member have the same name. You need to use the *super* key word to to access variable in parent class.
+
+Let's have a look at an example to understand super keyword better:
+
+```
+class Superclass
+{
+    int num = 10;
+}
+
+class Subclass: Superclass
+{
+    int num = 110;
+    void printNumber()
+    {
+        Console.WriteLine(num);
+    }
+}
+
+Subclass obj = new Subclass();
+obj.printNumber(); // print 110 as result.
+```
+
+And if the developer wants to get the variable from parent, they need to use the syntax like this:
+
+```
+super.variable_name
+```
+
+And let's have a look at the same example, but this time we want to pass the num from parent class
+
+```
+class Superclass
+{
+    int num = 10;
+}
+
+class Subclass: Superclass
+{
+    int num = 110;
+    void printNumber()
+    {
+        Console.WriteLine(super.num);
+    }
+}
+
+Subclass obj = new Subclass();
+obj.printNumber(); // the result is 10, because it used the variable of parent class
+```
+
+## 20. What is exception handling?
+It is an event during the program execution. It could be runtime exception, Error exception. These exceptions need to be handled through exception handling mechanism like this:
+```
+try
+{
+    // what you want to execute
+}
+catch(Exception e){
+
+}
+```
+
+Or you need to use try-catch-finally. The purpose to use catch and finally is to obtain and use resources in a try block. The exceptional circumstances is in the catch block, and release the resources in finally block.
+```
+public class EHClass
+{
+    void ReadFile(int index)
+    {
+        string path = @"c:\users\public\test.txt";
+        StreamReader file = new StreamReader(path);
+        try
+        {
+            file.ReadBlock(buffer, index, buffer.Length)
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        finally
+        {
+            // to release file 
+            if(file != null)
+                file.Close();
+        }
+    }
+}
+```
 

@@ -10,7 +10,7 @@ OOP stands for the Object Oriented Programming. The programs are considered as a
 
 ## 3. What is Abstraction?
 Object with abstraction means the *internal implement details* are hidden.
-For example, if you want to have personal information about a patient, you don't need some unnecessary information like pet's name. You fetch information from a pool of information, this approach called abstraction.
+For example, if you want to have personal information about a patient, you don't need some unnecessary information like pet's name. You fetch information from a pool of information, this approach called abstraction. 
 
 However, the information can be used for different applications, the patient information can also be used for job application and government database. The information can also be slightly modified. Hence it become master data (the basic of further data for different applications). This is the advantage of Abstraction.
 
@@ -536,3 +536,172 @@ public class EHClass
 }
 ```
 
+## 21. What are tokens?
+Tokens are various program elements which are identified by the compiler. A token is the smallest element of a program that is meaningful to the compiler.
+
+Keywords, variables, constants, special characters, operations are regarded as token.
+
+## 22. How do you explain sealed modifiers
+
+Sealed modifier are the access modifiers where the methods cannot inherit it. Sealed modifiers can also be applied to properties, events and methods. This modifier cannot be used for *static* members.
+
+```
+class X
+{
+    protected virtual void F(){}
+    protected virtual void F2(){}
+}
+
+class Y:X
+{
+    sealed protected override void F(){}
+    protected override void F2(){}
+}
+
+class Z:Y
+{
+    // Cannot override F because it is sealed
+    // protected virtual void F(){}
+
+    // Overriding F2 is allowed
+    protected virtual void F2(){}
+}
+
+```
+
+# 23. Explain what is base keyword
+
+The base keyword is to access members of base class from within a derived class:
++ Call a method on the base class that has been overridden by another method.
++ Specify which base-class constructor should be called when creating instances of the derived class
+
+A base class access is permitted only in a *constructor*, an *instance method* or an *instance property* accessor.
+
+But the base keyword should not be used with in a static method.
+The base class that is accessed is the base class specified in the class declaration. For example, if you specify class ClassB : ClassA. By using the base keyword, the members of ClassA are accessed from ClassB, regardless of the base class of ClassA.
+
+```
+public class BaseClass
+{
+    int num;
+
+    public BaseClass()
+    {
+        Console.WriteLine("in BaseClass()");
+    }
+
+    public BaseClass(int i)
+    {
+        num = i;
+        Console.WriteLine("in BaseClass(int i)");
+    }
+
+    public int GetNum()
+    {
+        return num;
+    }
+}
+
+public class DerivedClass : BaseClass
+{
+    // This constructor will call BaseClass.BaseClass()
+    public DerivedClass() : base()
+    {
+    }
+
+    // This constructor will call BaseClass.BaseClass(int i)
+    public DerivedClass(int i) : base(i)
+    {
+    }
+
+    static void Main()
+    {
+        DerivedClass md = new DerivedClass();
+        DerivedClass md1 = new DerivedClass(1);
+    }
+}
+/*
+Output:
+in BaseClass()
+in BaseClass(int i)
+*/
+```
+
+```
+public class Person
+{
+    protected string ssn = "444-55-6666";
+    protected string name = "John L. Malgraine";
+
+    public virtual void GetInfo()
+    {
+        Console.WriteLine("Name: {0}", name);
+        Console.WriteLine("SSN: {0}", ssn);
+    }
+}
+class Employee : Person
+{
+    public string id = "ABC567EFG";
+    public override void GetInfo()
+    {
+        // Calling the base class GetInfo method:
+        base.GetInfo();
+        Console.WriteLine("Employee ID: {0}", id);
+    }
+}
+
+class TestClass
+{
+    static void Main()
+    {
+        Employee E = new Employee();
+        E.GetInfo();
+    }
+}
+/*
+Output
+Name: John L. Malgraine
+SSN: 444-55-6666
+Employee ID: ABC567EFG
+*/
+```
+
+
+### What's the difference between super and base?
+Super is used in Java, and Base is used in C#
+
+## 24. What is the difference between new and override?
+
+The difference between override and new is the *override* extend the method of base class with a new definition.
+However the *new* keyword hides the method of base class. This could be important for different class deliver.  
+
+```
+class BaseClass
+{
+    public void ShowHello()
+    {
+        Console.WriteLine("Hello from base");
+    }
+    public virtual void ShowWelcome()
+    {
+        Console.WriteLine("Welcome from base");
+    }
+}
+
+class DerivedClass:BaseClass
+{
+    public new void ShowHello()
+    {
+        Console.WriteLine("Hello from derived");
+    }
+
+    public override void ShowWelcome()
+    {
+        Console.WriteLine("Welcome from derived");
+    }
+}
+
+BaseClass dc = new DeliverClass();
+dc.ShowHello(); // Hello from base;
+dc.ShowWelcome(); // Welcome from derived 
+```

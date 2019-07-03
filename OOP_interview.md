@@ -705,3 +705,241 @@ BaseClass dc = new DeliverClass();
 dc.ShowHello(); // Hello from base;
 dc.ShowWelcome(); // Welcome from derived 
 ```
+
+## 25. What is various types of constructors
+There are 3 types of constructors
+* Default Constructors: With no parameters
+* Parametric Constructors: With parameters. Create a new instance of class and also passing arguments simultaneously
+* Copy Constructor: Creates a new object as a copy of existing object.
+
+```
+// Here is an example of copy state
+public class State
+{
+    private IList<String> cities;
+    private String name;
+    private String country;
+
+    public State(State st) 
+    {
+        this.name = st.name; 
+        this.country = st.country;
+
+        List<String> ct = new ArrayList<>();
+        for (String c : st.cities)
+        {
+            ct.add(c);
+        }
+        this.cities = ct;
+    }
+}
+
+    private static State getState() 
+    {
+		//in real life, it will do some DB call or expensive API
+		//class to fetch the data
+		State state = new State();
+		state.setName("California");
+		state.setCountry("USA");
+		List<String> cities = new ArrayList<>();
+		cities.add("San Jose"); cities.add("San Francisco");
+		state.setCities(cities);
+		return state;
+    }
+
+State state = getState();
+State stateCopy = new State(state);
+System.out.println("State = "+state);
+System.out.println("StateCopy = "+stateCopy);
+
+stateCopy.getCities().add("Cupertino");
+stateCopy.setCountry("United States of America");
+    
+System.out.println("State = "+state);
+System.out.println("StateCopy = "+stateCopy);
+
+```
+The results are:
+
+```
+State = State(cities=[San Jose, San Francisco], name=California, country=USA)
+StateCopy = State(cities=[San Jose, San Francisco], name=California, country=USA)
+
+State = State(cities=[San Jose, San Francisco], name=California, country=USA)
+StateCopy = State(cities=[San Jose, San Francisco, Cupertino], name=California, country=United States of America)
+```
+
+
+## 26. What are the early and late Binding?
+Binding: THe compiler performs a process called binding when an object is assigned to an object variable.
+
+### Early binding (static binding)
+It recognizes and checks the methods or properties during compile time. The compiler already knows about what kind of object it is and what are the method or properties it holds, here the objects are static objects.
+
+```
+class Geeks 
+{
+    // data members
+    public string name;
+    public string subject;
+
+    // public method
+    public void details(string name, string subject)
+    {
+        this.name = name;
+        this.subject = subject;
+        Console.WriteLine("my name is {0}", name);
+        COnsole.WriteLine("my favorite subject is {0}", subject);
+    }
+}
+
+// Static function
+Geeks g = new Geeks();
+// Calling the method of Geeks class
+g.details("Ankita","C#");
+
+// calling my method gives an error because this method does not exist in the class
+g.myMethod();
+```
+
+### Late Binding
+The compiler does not know what kind of object it is and what are the methods or properties it holds, here the objects are dynamic objects. The type of the object is decided on the base of the data it holds on its right hand side during the running time. Basically, late binding is achieved by using *virtual* methods. The performance of late binding is slower than early binding.
+
+```
+dynamic obj = 4;
+dynamic obj1 = 4.32;
+
+// Show the types of obj and obj1
+Console.WriteLine(obj.GetType()); // int
+Console.WriteLine(obj1.GetType()); // double
+```
+
+## 27. What is this keyword
+
+This stands for the current object. It is used to distinguish the method parameter and class fields.
+
+## 28. What is the difference between structure and class 
+* Default access of structure is public, and class default access is private
+* A structure is used for group data, whereas a class can be used for both grouping data and methods.
+* Structures are exclusively used for data, and it does not require strict validation, but classes are used to encapsulate and inherent data, which requires strict validation
+* Classes allow to perform cleanup (garbage collector) before object is deallocated because garbage collector works on heap memory. Objects are usually deallocated when instance is no longer referenced by other code. Structures can not be garbage collector so no efficient memory management.
+* Sizeof empty class is 1 Byte where as Sizeof empty structure is 0 Bytes
+* Classes are still fit for larger or complex objects and Structs are good for small, isolated model objects. Boxing and unboxing operations are used to convert between a struct type and object. Too much boxing and unboxing can have a negative impact on the heap, the garbage collector, and ultimately the performance of the application.
+
+## 29. What is pure virtual function?
+A pure virtual function can be overridden in the derived class but cannot be defined. A virtual function can be declared as Pure by using the operator = 0
+```
+class Base
+{
+    int x;
+    public virtual void fun() = 0; // cannot define the pure virtual function
+}
+class Derived: Base
+{
+    public void fun()
+    {
+        //do something
+    }
+}
+```
+
+## 30. What are all the operators that cannot be overload
+*  [] The array indexing operator cannot be overloaded, but they are evaluated using & and |, which can be overloaded
+*  (T)x The cast operator cannot be overloaded, but you can define new conversion operators
+*  +=, -=.... Assignment operators cannot be explicitly overload.
+
+## 31. What is pointer
+In C# a pointer is a variable that holds the memory address of another type. But in C# the pointer can only be declared to hold the memory address of value types and arrays. Unlike reference types, pointer types are not tracked by default garbage collection mechanism. So the pointer cannot point to a reference type or even to a structure type which contains a reference type. We can say that pointers can point to only unmanaged types which includes all basic data types, enum types, other pointer types and structs which contain only unmanaged types.
+
+### Declaring a Pointer type
+
+*variable_name
+The * is known as the de-reference operator.
+```
+int *x;
+```
+Declares a pointer variable x, which can hold the address of an int type. The reference operator (&) can be used to get the memory address of a variable.
+
+```
+int x =100;
+int *ptr = &x;
+Console.WriteLine((int)ptr); // Displays the memory address
+Console.WriteLine(*ptr); // Displays the value at the memory address
+```
+
+### Unsafe Codes
+The C# statements can be executed either as in a safe or in an unsafe context. THe statements marked as unsafe by using the keyword unsafe runs outside the control of Garbage Collector. Remember that in C# any code involving pointers requires an unsafe context.
+
+```
+class MyClass
+{
+    public unsafe void Method()
+    {
+        int x = 10;
+        int y = 20;
+        int* ptr1 = &x;
+        int* ptr2 = &y;
+        Console.WriteLine((int)ptr1);  
+        Console.WriteLine((int)ptr2);  
+        Console.WriteLine(*ptr1);  
+        Console.WriteLine(*ptr2);  
+    }  
+}  
+class MyClient  
+{  
+    public static void Main()  
+    {  
+        MyClass mc = new MyClass();  
+        mc.Method();  
+    }  
+}  
+
+```
+
+### Pinning an Object
+
+The C# garbage collector can move the objects in memory as it wishes during the garbage collection process. The C# provides a special keyword fixed to tell Garbage Collector not to move an object. That means this fixes in memory the location of the value types pointed to. This is what is known as pinning in C#.
+ 
+The fixed statement is typically implemented by generating tables that describe to the Garbage Collector, which objects are to remain fixed in which regions of executable code. Thus as long as a Garbage Collector process doesn't actually occur during execution of fixed statements, there is very little cost associated with this. However when a Garbage Collector process does occur, fixed objects may cause fragmentation of the heap. Hence objects should be fixed only when absolutely necessary and only for the shortest amount of time.
+
+### Pointer and methods 
+The points can be passed as an argument to a method as showing below. The methods can also return a pointer.
+
+```
+class MyClass  
+{  
+    public unsafe void Method()  
+    {  
+        int x = 10;  
+        int y = 20;  
+        int* sum = swap(&x, &y);  
+        Console.WriteLine(*sum);  
+    }  
+    public unsafe int* swap(int* x, int* y)  
+    {  
+        int sum;  
+        sum = *x + *y;  
+        return ∑  
+    }  
+}  
+class MyClient  
+{  
+    public static void Main()  
+    {  
+        MyClass mc = new MyClass();  
+        mc.Method();  
+    }  
+}  
+```
+
+## 31 What is dynamic or run time polymorphism
+
+Dynamic or Run time polymorphism is also known as method overriding in which call to an overridden function is resolved during run time, not at the compile time. It means having 2 or more methods with the same name and same signature but with different implementation.
+
+
+
+## 32. Which OOPS concept is used as a reuse mechanism?
+Inheritance is the OOPS concept that can be used as a reuse mechanism
+
+## 33. Which OOPS concept exposes only the necessary info to call the functions
+Encapsulation
